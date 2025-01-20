@@ -26,8 +26,8 @@ async function copyDir(src, dest, mode = 0) {
     const destAbsoluteDirpath = path.join(dest, relativeDirpath);
     const destAbsoluteFilepath = path.join(destAbsoluteDirpath, dirent.name);
     if (dirent.isDirectory()) {
-      if (!(await exists(destAbsoluteDirpath)))
-        await fs.mkdir(destAbsoluteDirpath);
+      if (!(await exists(destAbsoluteFilepath)))
+        await fs.mkdir(destAbsoluteFilepath);
     } else {
       await fs.copyFile(srcAbsoluteFilepath, destAbsoluteFilepath, mode);
     }
