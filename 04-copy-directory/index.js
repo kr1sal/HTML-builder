@@ -16,6 +16,10 @@ async function readDir(dirpath, recursive = false) {
   return dirents;
 }
 
+async function removeDir(src) {
+  await fs.rm(src, { recursive: true, force: true });
+}
+
 async function copyDir(src, dest, mode = 0) {
   const dirents = await readDir(src, true);
   for (const dirent of dirents) {
@@ -44,7 +48,10 @@ async function exists(path) {
 }
 
 async function main() {
-  if (!(await exists('./04-copy-directory/files-copy'))) {
+  if (await exists('./04-copy-directory/files-copy')) {
+    await removeDir('./04-copy-directory/files-copy');
+    await fs.mkdir('./04-copy-directory/files-copy');
+  } else {
     await fs.mkdir('./04-copy-directory/files-copy');
   }
   await copyDir('./04-copy-directory/files', './04-copy-directory/files-copy');
