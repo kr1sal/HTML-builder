@@ -27,6 +27,10 @@ async function readDir(dirpath, recursive = false) {
   return dirents;
 }
 
+async function removeDir(src) {
+  await fs.rm(src, { recursive: true, force: true });
+}
+
 async function copyDir(src, dest, mode = 0) {
   const dirents = await readDir(src, true);
   for (const dirent of dirents) {
@@ -93,8 +97,8 @@ async function copyAssets() {
 }
 
 async function main() {
-  await fs.rm(distDirpath, { recursive: true, force: true });
-  if (!(await exists(distDirpath))) await fs.mkdir(distDirpath);
+  if (await exists(distDirpath)) await removeDir(distDirpath);
+  await fs.mkdir(distDirpath);
   packStyles();
   insertComponents();
   copyAssets();
